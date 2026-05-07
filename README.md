@@ -1,4 +1,4 @@
-# Quizo - Online Quiz Platform 🎓🖥️
+# Quizo - Online Quiz Platform
 
 منصة اختبارات إلكترونية متكاملة مبنية باستخدام إطار العمل **Laravel** وتقنية **Inertia.js** مع **React**.
 
