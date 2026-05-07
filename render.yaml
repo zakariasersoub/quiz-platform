@@ -12,3 +12,11 @@ services:
         value: stderr
       - key: DB_CONNECTION
         value: pgsql
+      - key: DB_HOST
+        value: db.inqivppxgswnjkpemlmb.supabase.co
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_DATABASE
+        value: postgres
+      - key: DB_USERNAME
+        value: postgres
