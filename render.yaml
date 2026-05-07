@@ -13,4 +13,6 @@ services:
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_URL
-        value: "" # سيتم وضع الرابط هنا أو في إعدادات Render
+        value: ""
+      - key: APP_URL
+        value: "https://quiz-platform.onrender.com" # قم بتغييره لرابطك الحقيقي
