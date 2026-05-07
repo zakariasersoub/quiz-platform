@@ -12,11 +12,5 @@ services:
         value: stderr
       - key: DB_CONNECTION
         value: pgsql
-      - key: DB_HOST
-        value: db.inqivppxgswnjkpemlmb.supabase.co
-      - key: DB_PORT
-        value: "6543"
-      - key: DB_DATABASE
-        value: postgres
-      - key: DB_USERNAME
-        value: postgres
+      - key: DB_URL
+        value: "" # سيتم وضع الرابط هنا أو في إعدادات Render
