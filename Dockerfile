@@ -41,5 +41,9 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 # Expose port
 EXPOSE 80
 
-# Start command
-CMD php artisan migrate --force && apache2-foreground
+# Start command: Clear cache first, then migrate, then start apache
+CMD php artisan config:clear && \
+    php artisan route:clear && \
+    php artisan view:clear && \
+    php artisan migrate --force && \
+    apache2-foreground
