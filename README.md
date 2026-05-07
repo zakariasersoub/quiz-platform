@@ -16,7 +16,7 @@
 - **Database**: PostgreSQL
 - **Deployment**: Docker & Render
 
-## 🌍 رابط المشروع المباشر (Demo)
+## رابط المشروع المباشر (Demo)
 يمكنك تجربة المنصة مباشرة عبر الرابط التالي:
 [https://quiz-platform-66kx.onrender.com/](https://quiz-platform-66kx.onrender.com/)
 
