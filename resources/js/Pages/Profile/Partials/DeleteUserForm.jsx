@@ -60,7 +60,12 @@ export default function DeleteUserForm({ className = '' }) {
                 </p>
             </header>
 
-            <DangerButton onClick={confirmUserDeletion}>
+            <DangerButton 
+                onClick={confirmUserDeletion} 
+                disabled={true} 
+                className="opacity-50 cursor-not-allowed"
+                title="This action is disabled for security reasons"
+            >
                 Delete Account
             </DangerButton>
 
