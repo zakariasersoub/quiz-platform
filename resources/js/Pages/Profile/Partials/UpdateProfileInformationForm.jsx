@@ -42,12 +42,13 @@ export default function UpdateProfileInformation({
 
                     <TextInput
                         id="name"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-gray-50 text-gray-500 cursor-not-allowed"
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                         required
                         isFocused
                         autoComplete="name"
+                        readOnly
                     />
 
                     <InputError className="mt-2" message={errors.name} />
@@ -59,11 +60,12 @@ export default function UpdateProfileInformation({
                     <TextInput
                         id="email"
                         type="email"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-gray-50 text-gray-500 cursor-not-allowed"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         required
                         autoComplete="username"
+                        readOnly
                     />
 
                     <InputError className="mt-2" message={errors.email} />
@@ -92,20 +94,31 @@ export default function UpdateProfileInformation({
                     </div>
                 )}
 
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                <div className="flex flex-col gap-4">
+                    <div className="flex items-center gap-4">
+                        <PrimaryButton disabled={true} className="opacity-50 cursor-not-allowed">
+                            Save
+                        </PrimaryButton>
 
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-gray-600">
-                            Saved.
-                        </p>
-                    </Transition>
+                        <Transition
+                            show={recentlySuccessful}
+                            enter="transition ease-in-out"
+                            enterFrom="opacity-0"
+                            leave="transition ease-in-out"
+                            leaveTo="opacity-0"
+                        >
+                            <p className="text-sm text-gray-600">
+                                Saved.
+                            </p>
+                        </Transition>
+                    </div>
+                    
+                    <p className="text-xs font-bold text-red-600 bg-red-50 p-3 rounded-lg border border-red-100 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m0 0v2m0-2h2m-2 0H10m11 3.497A9 9 0 1112.497 3 9 9 0 0121 18.497z" />
+                        </svg>
+                        Security Alert: Profile editing is disabled to protect administrative credentials during production.
+                    </p>
                 </div>
             </form>
         </section>
