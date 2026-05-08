@@ -15,6 +15,7 @@ class QuizController extends Controller
     {
         return Inertia::render('Welcome', [
             'categories' => Category::all(),
+            'uncategorizedCount' => Question::whereNull('category_id')->count(),
             'canLogin' => \Illuminate\Support\Facades\Route::has('login'),
             'auth' => [
                 'user' => auth()->user(),
@@ -26,13 +27,16 @@ class QuizController extends Controller
     {
         $request->validate([
             'username' => 'required|string|max:255',
-            'category_id' => 'nullable|exists:categories,id'
+            'category_id' => 'nullable'
         ]);
+
+        $catId = $request->category_id === 'general' ? null : $request->category_id;
 
         $session = QuizSession::create([
             'username' => $request->username,
             'user_id' => auth()->id(),
-            'category_id' => $request->category_id,
+            'category_id' => $catId,
+            'is_general' => $request->category_id === 'general'
         ]);
 
         $request->session()->put('quiz_session_id', $session->id);
@@ -58,21 +62,23 @@ class QuizController extends Controller
 
         $query = Question::with('answers')->inRandomOrder();
         
-        if ($session->category_id) {
+        if ($session->is_general) {
+            $query->whereNull('category_id');
+        } elseif ($session->category_id) {
             $query->where('category_id', $session->category_id);
         }
 
         $questions = $query->limit((int) $numQuestions)->get();
 
-        // If not enough questions in category, get from any
-        if ($questions->count() < 1 && $session->category_id) {
+        // Fallback if no questions in specific category
+        if ($questions->count() < 1) {
              $questions = Question::with('answers')->inRandomOrder()->limit((int) $numQuestions)->get();
         }
 
         return Inertia::render('Quiz/Show', [
             'questions' => $questions,
             'sessionId' => $session->id,
-            'duration' => $session->category?->duration ?? 10, // minutes
+            'duration' => $session->is_general ? 10 : ($session->category?->duration ?? 10),
         ]);
     }
 

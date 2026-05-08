@@ -1,7 +1,7 @@
 import { Head, useForm, Link } from '@inertiajs/react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
-export default function Welcome({ auth, categories }) {
+export default function Welcome({ auth, categories, uncategorizedCount }) {
     const { data, setData, post, processing, errors } = useForm({
         username: '',
         category_id: '',
@@ -48,6 +48,9 @@ export default function Welcome({ auth, categories }) {
                                 required
                             >
                                 <option value="">Select a category</option>
+                                {uncategorizedCount > 0 && (
+                                    <option value="general">General (Mixed Topics)</option>
+                                )}
                                 {categories && categories.map((cat) => (
                                     <option key={cat.id} value={cat.id}>{cat.name}</option>
                                 ))}

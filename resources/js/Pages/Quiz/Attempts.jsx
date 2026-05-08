@@ -1,14 +1,21 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Attempts({ auth, attempts, filters }) {
     const [search, setSearch] = useState(filters.username || '');
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        router.get(route('admin.attempts.index'), { username: search }, { preserveState: true });
-    };
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            router.get(route('admin.attempts.index'), { username: search }, { 
+                preserveState: true,
+                preserveScroll: true,
+                replace: true 
+            });
+        }, 300); // 300ms debounce
+
+        return () => clearTimeout(timeoutId);
+    }, [search]);
 
     const deleteAttempt = (id) => {
         if (confirm('Are you sure you want to delete this attempt?')) {
@@ -27,18 +34,23 @@ export default function Attempts({ auth, attempts, filters }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-3xl border border-gray-100 mb-8 p-6">
-                        <form onSubmit={handleSearch} className="flex gap-4">
-                            <input
-                                type="text"
-                                placeholder="Search by username..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                className="flex-1 rounded-2xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm"
-                            />
-                            <button type="submit" className="px-8 py-2 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition">
-                                Filter
-                            </button>
-                        </form>
+                        <div className="flex gap-4 items-center">
+                            <div className="relative flex-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 absolute left-4 top-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <input
+                                    type="text"
+                                    placeholder="Search by username..."
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    className="w-full pl-12 pr-4 py-3 rounded-2xl border-gray-100 focus:border-blue-500 focus:ring-blue-500 shadow-sm transition-all"
+                                />
+                            </div>
+                            <div className="text-sm font-bold text-slate-400 uppercase tracking-widest px-4">
+                                Auto-filtering
+                            </div>
+                        </div>
                     </div>
 
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-3xl border border-gray-100">
