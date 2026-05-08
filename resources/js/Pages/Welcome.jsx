@@ -31,7 +31,7 @@ export default function Welcome({ auth }) {
                                 value={data.username}
                                 onChange={(e) => setData('username', e.target.value)}
                                 className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
-                                placeholder="e.g. John Doe"
+                                placeholder="e.g zaki ser"
                                 required
                             />
                             {errors.username && <div className="text-red-500 text-sm mt-1 font-medium">{errors.username}</div>}
