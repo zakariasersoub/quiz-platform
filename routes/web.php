@@ -20,6 +20,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('questions', App\Http\Controllers\Admin\QuestionController::class);
     Route::resource('settings', App\Http\Controllers\Admin\SettingController::class);
+    Route::get('/attempts', [App\Http\Controllers\QuizController::class, 'attempts'])->name('attempts.index');
+    Route::delete('/attempts/{id}', [App\Http\Controllers\QuizController::class, 'destroyAttempt'])->name('attempts.destroy');
 });
 
 Route::middleware('auth')->group(function () {

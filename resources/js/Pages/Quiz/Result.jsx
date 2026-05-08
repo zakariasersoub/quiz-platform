@@ -1,8 +1,7 @@
 import { Head } from '@inertiajs/react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
-export default function Result({ session }) {
-    const totalQuestions = session.user_answers.length;
+export default function Result({ session, totalQuestions }) {
     const score = session.score;
     const percentage = Math.round((score / totalQuestions) * 100);
 

@@ -2,15 +2,35 @@ import { Head, useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
-export default function Show({ questions, sessionId }) {
+export default function Show({ questions, sessionId, duration }) {
     const { data, setData, post, processing } = useForm({
         answers: {},
     });
 
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(duration * 60); // duration is in minutes
 
     const question = questions[currentQuestionIndex];
     const isLastQuestion = currentQuestionIndex === questions.length - 1;
+
+    useEffect(() => {
+        if (timeLeft <= 0) {
+            submitQuiz();
+            return;
+        }
+
+        const timer = setInterval(() => {
+            setTimeLeft(prev => prev - 1);
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [timeLeft]);
+
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
 
     const handleAnswerSelection = (answerId) => {
         const currentAnswers = data.answers[question.id] || [];
@@ -63,8 +83,14 @@ export default function Show({ questions, sessionId }) {
             <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
                 <div className="max-w-3xl mx-auto">
                     
-                    <div className="flex justify-center mb-10">
-                        <ApplicationLogo className="w-56 h-auto" />
+                    <div className="flex justify-between items-center mb-10">
+                        <ApplicationLogo className="w-40 h-auto" />
+                        <div className={`flex items-center space-x-2 px-6 py-3 rounded-2xl shadow-sm border ${timeLeft < 60 ? 'bg-red-50 border-red-200 text-red-600 animate-pulse' : 'bg-white border-gray-100 text-slate-700'}`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span className="text-xl font-black tabular-nums">{formatTime(timeLeft)}</span>
+                        </div>
                     </div>
 
                     {/* Progress Bar */}

@@ -1,9 +1,10 @@
 import { Head, useForm, Link } from '@inertiajs/react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
-export default function Welcome({ auth }) {
+export default function Welcome({ auth, categories }) {
     const { data, setData, post, processing, errors } = useForm({
         username: '',
+        category_id: '',
     });
 
     const submit = (e) => {
@@ -19,7 +20,7 @@ export default function Welcome({ auth }) {
                     <div className="text-center mb-10 flex flex-col items-center">
                         <ApplicationLogo className="w-48 h-auto mb-6" />
                         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Test Your Knowledge</h1>
-                        <p className="text-slate-600 mt-2">Enter your username to begin the challenge.</p>
+                        <p className="text-slate-600 mt-2">Enter your name and pick a category.</p>
                     </div>
 
                     <form onSubmit={submit} className="space-y-6">
@@ -35,6 +36,23 @@ export default function Welcome({ auth }) {
                                 required
                             />
                             {errors.username && <div className="text-red-500 text-sm mt-1 font-medium">{errors.username}</div>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="category_id" className="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wider">Category</label>
+                            <select
+                                id="category_id"
+                                value={data.category_id}
+                                onChange={(e) => setData('category_id', e.target.value)}
+                                className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
+                                required
+                            >
+                                <option value="">Select a category</option>
+                                {categories && categories.map((cat) => (
+                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                ))}
+                            </select>
+                            {errors.category_id && <div className="text-red-500 text-sm mt-1 font-medium">{errors.category_id}</div>}
                         </div>
 
                         <button
